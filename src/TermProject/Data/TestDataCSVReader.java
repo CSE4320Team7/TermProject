@@ -169,6 +169,14 @@ public class TestDataCSVReader {
 	        }
 		}
 		intLastDataItem=TestData.size();
+		
+		try {
+			CSVFile.close();
+		}
+		catch (IOException ex) {
+            Logger.getLogger(TestDataCSVReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
 	}
 	
 	public DataItem GetGivenCase(int intTestNumber){
@@ -177,7 +185,7 @@ public class TestDataCSVReader {
 	}
 	
 	public DataItem GetCase(){
-		
+		return TestData.get(intActiveDataItem-1);
 	}
 	
 	public void NextCase(){
