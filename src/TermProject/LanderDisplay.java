@@ -26,7 +26,7 @@ import javax.swing.UIManager;
 
 public class LanderDisplay extends JFrame {
 
-	private JPanel contentPane;
+	/**private JPanel contentPane;
 	private JTextField textFieldC1;
 	private JTextField textField_1;
 	private JTextField textFieldB1;
@@ -74,11 +74,60 @@ public class LanderDisplay extends JFrame {
 	private JLabel lblNewLabel_14;
 	private JToggleButton tglbtnNewToggleButton_2;
 	private JToggleButton tglbtnD;
-	private JLabel lblAlertPanel;
+	private JLabel lblAlertPanel;*/
+	JPanel contentPane;
+	JTextField textFieldC1;
+	JTextField textField_1;
+	JTextField textFieldB1;
+	JTextField textField_3;
+	JTextField textField_4;
+	JTextField textField_5;
+	JTextField placeholderTextField_2;
+	JTextField textFieldD1;
+	JTextField textFieldD3;
+	JTextField placeholderTextField;
+	JTextField textField_10;
+	JTextField textFieldA1;
+	JTextField textField_12;
+	JTextField textField_13;
+	JTextField textFieldD2;
+	JTextField textFieldC2;
+	JTextField textFieldB2;
+	JTextField txtEpd;
+	JTextField textFieldA2;
+	JTextField textFieldC3;
+	JTextField textFieldB3;
+	JTextField textFieldA3;
+	JTextField textField_22;
+	JTextField textField_23;
+	JPanel panel_1;
+	JLabel lblNewLabel;
+	JTextField textField_24;
+	JLabel lblNewLabel_1;
+	JTextField textField_25;
+	JLabel lblNewLabel_2;
+	JTextField textField_26;
+	JTextField textField_27;
+	JTextField textField_28;
+	JLabel lblNewLabel_5;
+	JTextField textField_29;
+	JTextField textField_30;
+	JLabel lblNewLabel_7;
+	JLabel lblNewLabel_8;
+	JLabel lblNewLabel_9;
+	JLabel lblNewLabel_10;
+	JLabel lblNewLabel_12;
+	JLabel lblNewLabel_3;
+	JLabel lblNewLabel_4;
+	JLabel lblNewLabel_6;
+	JLabel lblNewLabel_14;
+	JToggleButton tglbtnNewToggleButton_2;
+	JToggleButton tglbtnD;
+	JLabel lblAlertPanel;
 
 	/**
 	 * Launch the application.
-	 */
+	 *
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -90,7 +139,7 @@ public class LanderDisplay extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -386,4 +435,6 @@ public class LanderDisplay extends JFrame {
 		lblAlertPanel.setBounds(766, 30, 188, 37);
 		contentPane.add(lblAlertPanel);
 	}
+	
+	
 }

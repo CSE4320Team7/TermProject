@@ -1,11 +1,21 @@
 package TermProject;
 
 import java.util.Random;
+import java.awt.Color;
+import java.awt.color.*;
 
 public class LanderSim {
+	
+	private static LanderDisplay display;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		try {
+			display = new LanderDisplay();
+			display.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		start();
 	}
 	
@@ -23,6 +33,8 @@ public class LanderSim {
 		double alt = 14318; //feet
 		double vel = -366.667; //feet/second
 		double fuel = 135; //gallons
+		int landerAtt = 0;
+		int groundAtt = rand.nextInt(9) - 4;
 		int damage = 0;
 		
 		//TODO: Start in Up position when switch is working
@@ -63,17 +75,15 @@ public class LanderSim {
 			
 				if(damage >= 20) {
 					int crash = rand.nextInt(10) + 1; //generate number between 1-10
-					if(crash > 7) { //if greater than 7 (30% chance)
-						System.out.println("Landed!");
+					if(crash > 7 || landerAtt != groundAtt) { //if greater than 7 (30% chance)
 						indicate = indicate + "LOS ";
 						iLOS = true;
 					} else {
-						System.out.println("Crash Landed!");
 						alarm = alarm + "LC ";
 						aLC = true;
 					}
 				}
-				break;
+				
 				
 			}
 			
@@ -95,13 +105,21 @@ public class LanderSim {
 				aPDMG = true;
 			}
 			
-			//Pod Position COmmand INdicator
-			
 			//Pos Position Indicator
 			if(podpos == true) { 
 				indicate = indicate + "PODPOS "; //green id down(true)
 				iPODPOS = true;
+				podpos = true;
 			}
+
+			//Pod Position COmmand INdicator
+			if(iPODCMD) {//display.getPodCmd() == true) {
+				iPODCMD = true;
+			} else {
+				podpos = false;
+				iPODCMD = false;
+			}
+				
 			
 			//Ideal Pod Down Zone Indicator
 			if(-50 > vel && vel >= -100) {
@@ -130,15 +148,20 @@ public class LanderSim {
 			}
 			
 			//aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS
-			LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS, time, MPD, fuel, alt, vel);
-			
+			try {
+				Thread.sleep(1000);
+				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, 
+						iPODCMD, iPODPOS, time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
 			//Lander Crashed Alarm
 			//System.out.printf("\nAt time %d\n   MPD: %s, Alt: %.3f, Vel: %.3f, Fuel: %.3f", time, MPD, alt, vel, fuel);
 			//System.out.printf("  Alerts:\n\tALARMS- %s\n\tWARNINGS- %s\n\tINDICATORS- %s", alarm, warn, indicate);
-						
+				
+			if(aLC == true || iLOS == true)
+				break;
 		}
-		
-		System.out.printf("Remaining fuel: %.2f", fuel);
 		
 	}
 	
@@ -159,57 +182,67 @@ public class LanderSim {
 	 * @param fuel remaining fuel as double
 	 * @param alt current altitude as double
 	 * @param vel current velocity as double
+	 * @param lAtt
+	 * @param gAtt
 	 */
 	private static void LanderDisplay(boolean aFLT20, boolean aPOS, boolean iIPDZ, boolean aPDMG, 
 			boolean wEPD, boolean aLC, boolean iLOS, boolean iPODCMD, boolean iPODPOS, 
-			int time, String MPD, double fuel, double alt, double vel) {
+			int time, boolean podpos, String MPD, double fuel, double alt, double vel, int lAtt, int gAtt) {
 		
 		//This would be the output panel showing alt, vel, fuel
-		System.out.printf("\nAt time %d\n   MPD: %s, Alt: %.3f, Vel: %.3f, Fuel: %.3f", time, MPD, alt, vel, fuel);
+		//System.out.printf("\nAt time %d\n   MPD: %s, Alt: %.3f, Vel: %.3f, Fuel: %.3f", time, MPD, alt, vel, fuel);
+		
+		display.textField_24.setText(String.format("%.3f", alt));
+		display.textField_25.setText(String.format("%.3f", vel));
+		display.textField_26.setText(MPD);
+		if(podpos)
+			display.textField_27.setText("UP");
+		else
+			display.textField_27.setText("DOWN");
+		display.textField_28.setText(String.format("%.3f", fuel));
+		display.textField_29.setText("" + lAtt);
+		display.textField_30.setText("" + gAtt);
 		
 		//The following 3 sections would be the indicator panel
-		System.out.print("\nLight Panel:\n\tAlarms- ");
 		if(aFLT20)
-			System.out.print("FLT20 "); //TODO:change color to green
+			//TODO:change color to green
+			display.textFieldA1.setForeground(Color.RED);
 		else
-			System.out.print(""); //TODO:change color to white
+			display.textFieldA1.setForeground(Color.BLACK); //TODO:change color to white
 		if(aPOS)
-			System.out.print("POS ");
+			display.textFieldB1.setForeground(Color.RED);
 		else
-			System.out.print("");
+			display.textFieldB1.setForeground(Color.BLACK);
 		if(aPDMG)
-			System.out.print("PDMG ");
+			display.textFieldC1.setForeground(Color.RED);
 		else
-			System.out.print("");
+			display.textFieldC1.setForeground(Color.BLACK);
 		if(aLC)
-			System.out.print("LC ");
+			display.textFieldD1.setForeground(Color.RED);
 		else
-			System.out.print("");
+			display.textFieldD1.setForeground(Color.BLACK);
 		
-		System.out.print("\n\tWarnings- ");
 		if(wEPD)
-			System.out.print("EPD ");
+			display.textFieldA2.setForeground(Color.ORANGE);
 		else
-			System.out.print("");
+			display.textFieldA2.setForeground(Color.BLACK);
 		
-		System.out.print("\n\tIndicators- ");
 		if(iIPDZ)
-			System.out.print("IPDZ ");
+			display.textFieldA3.setForeground(Color.GREEN);
 		else
-			System.out.print("");
+			display.textFieldA3.setForeground(Color.BLACK);
 		if(iLOS)
-			System.out.print("LOS ");
+			display.textFieldB3.setForeground(Color.GREEN);
 		else
-			System.out.print("");
+			display.textFieldB3.setForeground(Color.BLACK);
 		if(iPODCMD)
-			System.out.print("PODCMD ");
+			display.textFieldC3.setForeground(Color.GREEN);
 		else
-			System.out.print("");
-		
+			display.textFieldC3.setForeground(Color.BLACK);
 		if(iPODPOS)
-			System.out.print("PODPOS ");
+			display.textFieldD3.setForeground(Color.GREEN);
 		else
-			System.out.print("");
+			display.textFieldD3.setForeground(Color.BLACK);
 		
 
 	}
