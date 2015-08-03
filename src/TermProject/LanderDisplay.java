@@ -9,9 +9,12 @@ import javax.swing.SpringLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JToggleButton;
 import java.awt.Font;
@@ -124,6 +127,9 @@ public class LanderDisplay extends JFrame {
 	JToggleButton tglbtnNewToggleButton_2;
 	JToggleButton tglbtnD;
 	JLabel lblAlertPanel;
+	
+	private boolean buttonStatus = false;
+	private int landerAttitude = 0;
 
 	/**
 	 * Launch the application.
@@ -387,14 +393,26 @@ public class LanderDisplay extends JFrame {
 		lblNewLabel_11.setBounds(12, 104, 56, 29);
 		attitudePanel.add(lblNewLabel_11);
 		
-		JToggleButton tglbtnNewToggleButton = new JToggleButton("<");
+		JButton tglbtnNewToggleButton = new JButton("<");
 		tglbtnNewToggleButton.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		tglbtnNewToggleButton.setBounds(80, 38, 137, 149);
+		tglbtnNewToggleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				adjustLanderAttitude(-1);
+			}
+		});
 		attitudePanel.add(tglbtnNewToggleButton);
 		
-		JToggleButton tglbtnNewToggleButton_1 = new JToggleButton(">");
+		JButton tglbtnNewToggleButton_1 = new JButton(">");
 		tglbtnNewToggleButton_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		tglbtnNewToggleButton_1.setBounds(222, 38, 137, 149);
+		tglbtnNewToggleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				adjustLanderAttitude(1);
+			}
+		});
 		attitudePanel.add(tglbtnNewToggleButton_1);
 		
 		JLabel lblNewLabel_13 = new JLabel("+");
@@ -423,11 +441,26 @@ public class LanderDisplay extends JFrame {
 		tglbtnNewToggleButton_2 = new JToggleButton("U");
 		tglbtnNewToggleButton_2.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		tglbtnNewToggleButton_2.setBounds(42, 42, 160, 107);
+		tglbtnNewToggleButton_2.setSelected(true);
+		tglbtnNewToggleButton_2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tglbtnD.setSelected(false);
+				setButtonStatus(false);
+			}
+		});
 		podPosPanel.add(tglbtnNewToggleButton_2);
 		
 		tglbtnD = new JToggleButton("D");
 		tglbtnD.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		tglbtnD.setBounds(42, 157, 160, 107);
+		tglbtnD.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tglbtnNewToggleButton_2.setSelected(false);
+				setButtonStatus(true);
+			}
+		});
 		podPosPanel.add(tglbtnD);
 		
 		lblAlertPanel = new JLabel("ALERT PANEL");
@@ -436,5 +469,17 @@ public class LanderDisplay extends JFrame {
 		contentPane.add(lblAlertPanel);
 	}
 	
+	public int getLanderAttitude() {
+		return this.landerAttitude;
+	}
+	public void adjustLanderAttitude(int tilt) {
+		this.landerAttitude += tilt;
+	}
+	public void setButtonStatus(boolean status) {
+		this.buttonStatus = status;
+	}
+	public boolean getButtonStatus() {
+		return this.buttonStatus;
+	}
 	
 }
