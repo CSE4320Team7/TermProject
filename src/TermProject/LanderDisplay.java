@@ -407,7 +407,7 @@ public class LanderDisplay extends JFrame {
 		JButton tglbtnNewToggleButton_1 = new JButton(">");
 		tglbtnNewToggleButton_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		tglbtnNewToggleButton_1.setBounds(222, 38, 137, 149);
-		tglbtnNewToggleButton.addActionListener(new ActionListener() {
+		tglbtnNewToggleButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				adjustLanderAttitude(1);
