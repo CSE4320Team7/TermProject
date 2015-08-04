@@ -78,57 +78,56 @@ public class LanderDisplay extends JFrame {
 	private JToggleButton tglbtnNewToggleButton_2;
 	private JToggleButton tglbtnD;
 	private JLabel lblAlertPanel;*/
-	JPanel contentPane;
-	JTextField textFieldC1;
-	JTextField textField_1;
-	JTextField textFieldB1;
-	JTextField textField_3;
-	JTextField textField_4;
-	JTextField textField_5;
-	JTextField placeholderTextField_2;
-	JTextField textFieldD1;
-	JTextField textFieldD3;
-	JTextField placeholderTextField;
-	JTextField textField_10;
-	JTextField textFieldA1;
-	JTextField textField_12;
-	JTextField textField_13;
-	JTextField textFieldD2;
-	JTextField textFieldC2;
-	JTextField textFieldB2;
-	JTextField txtEpd;
-	JTextField textFieldA2;
-	JTextField textFieldC3;
-	JTextField textFieldB3;
-	JTextField textFieldA3;
-	JTextField textField_22;
-	JTextField textField_23;
-	JPanel panel_1;
-	JLabel lblNewLabel;
-	JTextField textField_24;
-	JLabel lblNewLabel_1;
-	JTextField textField_25;
-	JLabel lblNewLabel_2;
-	JTextField textField_26;
-	JTextField textField_27;
-	JTextField textField_28;
-	JLabel lblNewLabel_5;
-	JTextField textField_29;
-	JTextField textField_30;
-	JLabel lblNewLabel_7;
-	JLabel lblNewLabel_8;
-	JLabel lblNewLabel_9;
-	JLabel lblNewLabel_10;
-	JLabel lblNewLabel_12;
-	JLabel lblNewLabel_3;
-	JLabel lblNewLabel_4;
-	JLabel lblNewLabel_6;
-	JLabel lblNewLabel_14;
-	JToggleButton tglbtnNewToggleButton_2;
-	JToggleButton tglbtnD;
-	JLabel lblAlertPanel;
+	public JPanel contentPane;
+	public JTextField textFieldC1;
+	public JTextField textField_1;
+	public JTextField textFieldB1;
+	public JTextField textField_3;
+	public JTextField textField_4;
+	public JTextField textField_5;
+	public JTextField placeholderTextField_2;
+	public JTextField textFieldD1;
+	public JTextField textFieldD3;
+	public JTextField placeholderTextField;
+	public JTextField textField_10;
+	public JTextField textFieldA1;
+	public JTextField textField_12;
+	public JTextField textField_13;
+	public JTextField textFieldD2;
+	public JTextField textFieldC2;
+	public JTextField textFieldB2;
+	public JTextField txtEpd;
+	public JTextField textFieldA2;
+	public JTextField textFieldC3;
+	public JTextField textFieldB3;
+	public JTextField textFieldA3;
+	public JTextField textField_22;
+	public JTextField textField_23;
+	public JPanel panel_1;
+	public JLabel lblNewLabel;
+	public JTextField textField_24;
+	public JLabel lblNewLabel_1;
+	public JTextField textField_25;
+	public JLabel lblNewLabel_2;
+	public JTextField textField_26;
+	public JTextField textField_27;
+	public JTextField textField_28;
+	public JLabel lblNewLabel_5;
+	public JTextField textField_29;
+	public JTextField textField_30;
+	public JLabel lblNewLabel_7;
+	public JLabel lblNewLabel_8;
+	public JLabel lblNewLabel_9;
+	public JLabel lblNewLabel_10;
+	public JLabel lblNewLabel_12;
+	public JLabel lblNewLabel_3;
+	public JLabel lblNewLabel_4;
+	public JLabel lblNewLabel_6;
+	public JLabel lblNewLabel_14;
+	public JToggleButton tglbtnNewToggleButton_2;
+	public JToggleButton tglbtnD;
+	public JLabel lblAlertPanel;
 	
-	private boolean buttonStatus = false;
 	private int landerAttitude = 0;
 
 	/**
@@ -446,7 +445,6 @@ public class LanderDisplay extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tglbtnD.setSelected(false);
-				setButtonStatus(false);
 			}
 		});
 		podPosPanel.add(tglbtnNewToggleButton_2);
@@ -458,7 +456,6 @@ public class LanderDisplay extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tglbtnNewToggleButton_2.setSelected(false);
-				setButtonStatus(true);
 			}
 		});
 		podPosPanel.add(tglbtnD);
@@ -469,17 +466,25 @@ public class LanderDisplay extends JFrame {
 		contentPane.add(lblAlertPanel);
 	}
 	
+	/**
+	 * set the Up / Down pod button through code
+	 * @param test true if bod is activated.
+	 */
+	public void setButton(boolean test) {
+		if(test) {
+			tglbtnNewToggleButton_2.setSelected(false);
+			tglbtnD.setSelected(true);
+		}
+	}
+	
 	public int getLanderAttitude() {
 		return this.landerAttitude;
 	}
 	public void adjustLanderAttitude(int tilt) {
 		this.landerAttitude += tilt;
 	}
-	public void setButtonStatus(boolean status) {
-		this.buttonStatus = status;
-	}
 	public boolean getButtonStatus() {
-		return this.buttonStatus;
+		return tglbtnD.isSelected();
 	}
 	
 }

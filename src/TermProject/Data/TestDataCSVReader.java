@@ -189,6 +189,10 @@ public class TestDataCSVReader {
 		return TestData.get(intActiveDataItem-1);
 	}
 	
+	public ArrayList getData() {
+		return TestData;
+	}
+	
 	public void NextCase(){
 		intActiveDataItem=intActiveDataItem+1;
 		//This code is dumb, but we're building a lander whose speed is based on time and not velocity;

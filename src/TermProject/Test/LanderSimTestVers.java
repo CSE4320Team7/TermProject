@@ -1,17 +1,21 @@
-package TermProject;
+package TermProject.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-import java.awt.Color;
+import TermProject.Data.TestDataCSVReader;
 
-public class LanderSim {
+import java.awt.Color;
+import java.awt.color.*;
+
+public class LanderSimTestVers {
 	
-	private static LanderDisplay display;
+	private static TermProject.LanderDisplay display;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			display = new LanderDisplay();
+			display = new TermProject.LanderDisplay();
 			display.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -26,7 +30,7 @@ public class LanderSim {
 	private static void start() {
 		
 		Random rand = new Random();
-		
+		ArrayList<TestDataCSVReader.DataItem> data = new TestDataCSVReader("Mars lander Test Case table.csv").getData();
 		//Starting variables
 		double G = 12.2; //feet/second^2
 		int time = 0;
@@ -38,7 +42,7 @@ public class LanderSim {
 		int landerAtt = 0;
 		int damage = 0;
 		
-		//Start in Up position when switch is working
+		//TODO: Start in Up position when switch is working
 		boolean podpos = false; //Up = false, Down = true
 
 		//a = alarm, i = indicator, w = warning
@@ -48,7 +52,22 @@ public class LanderSim {
 				wEPD = false, aLC = false, iLOS = false, iPODCMD = false, iPODPOS = false;
 		
 		//Run program until fuel is empty?
-		while(true) {
+		int i = 0;
+		do {
+			TestDataCSVReader.DataItem testData = data.remove(i);
+			if(testData.strInputPODPOS.equalsIgnoreCase("U"))
+				display.setButton(false);
+			else
+				display.setButton(true);
+			
+			groundAtt = 0;
+			damage = testData.intInputPodDamageCount;
+			alt = testData.dblInputAltitude;
+			vel = testData.dblInputVelocity;
+			fuel = testData.dblInputFuel;
+			
+			podpos = display.getButtonStatus();
+			
 			landerAtt = display.getLanderAttitude();
 			
 			String MPD = "";
@@ -100,14 +119,13 @@ public class LanderSim {
 			}
 			
 			//Damage Pod and Speed Alarms
+			//Pod damage if vel over 100 for 20 seconds
 			if(vel < -100 && podpos == true) {
 				damage = damage + 1;
 				aPOS = true;
 			} else {
 				aPOS = false;
 			}
-			
-			//PDMG if vel over 100 for 40 seconds
 			if( damage >= 40 ) {
 				aPDMG = true;
 			} else {
@@ -124,7 +142,7 @@ public class LanderSim {
 			if(wEPD) {
 				iPODCMD = true; //DOWN
 			} else {
-				iPODCMD = iPODPOS;
+				iPODCMD = display.getButtonStatus();
 			}
 				
 			//Ideal Pod Down Zone Indicator
@@ -140,15 +158,27 @@ public class LanderSim {
 			if(aLC == true || iLOS == true) {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				break;
+				//break;
 			}
 			
 			//calculate stuff if pod is down(true)
+			time = time + 1;
 			{
 				time = time + 1;
 				alt -= (time-0.5)*(cRate-G);
 				vel += (cRate - G);
 				fuel -= cGPS;
+			}
+
+				
+			
+			//iPODPOS
+			if(iPODCMD) {
+				iPODPOS = true;
+				podpos = true;
+			} else {
+				iPODPOS = false;
+				podpos = false;
 			}
 			
 			
@@ -162,7 +192,7 @@ public class LanderSim {
 			}
 			
 			
-			//pod buttons are calculated for the next second.
+			/**pod buttons are calculated for the next second.
 			podpos = display.getButtonStatus();
 			
 			//iPODPOS
@@ -172,9 +202,9 @@ public class LanderSim {
 			} else {
 				iPODPOS = false;
 				podpos = false;
-			}
-			
-		}
+			}*/
+			i++;
+		} while(data.isEmpty());
 		
 	}
 	
