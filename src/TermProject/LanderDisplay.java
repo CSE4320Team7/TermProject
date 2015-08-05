@@ -184,91 +184,110 @@ public class LanderDisplay extends JFrame {
 		
 		panelDisplayPanel = new JPanel();
 		panelDisplayPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panelDisplayPanel.setBounds(135, 124, 279, 300);
+		panelDisplayPanel.setBounds(92, 124, 351, 300);
 		contentPane.add(panelDisplayPanel);
 		panelDisplayPanel.setLayout(null);
 		
 		lblAlt = new JLabel("Alt");
-		lblAlt.setBounds(12, 8, 15, 16);
+		lblAlt.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAlt.setBounds(12, 8, 61, 16);
 		panelDisplayPanel.add(lblAlt);
 		
 		textFieldAltitude = new JTextField();
-		textFieldAltitude.setBounds(39, 5, 61, 22);
+		textFieldAltitude.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldAltitude.setBounds(65, 5, 101, 22);
 		panelDisplayPanel.add(textFieldAltitude);
 		textFieldAltitude.setColumns(5);
 		
 		lblFt = new JLabel("ft");
-		lblFt.setBounds(112, 8, 8, 16);
+		lblFt.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFt.setBounds(188, 8, 20, 16);
 		panelDisplayPanel.add(lblFt);
 		
 		lblVel = new JLabel("Vel");
-		lblVel.setBounds(12, 37, 18, 16);
+		lblVel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVel.setBounds(12, 37, 39, 16);
 		panelDisplayPanel.add(lblVel);
 		
 		textFieldVelocity = new JTextField();
-		textFieldVelocity.setBounds(39, 32, 61, 22);
+		textFieldVelocity.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldVelocity.setBounds(65, 34, 101, 22);
 		panelDisplayPanel.add(textFieldVelocity);
 		textFieldVelocity.setColumns(5);
 		
 		lblFtPerSec = new JLabel("ft/s");
-		lblFtPerSec.setBounds(113, 37, 19, 16);
+		lblFtPerSec.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFtPerSec.setBounds(188, 37, 45, 16);
 		panelDisplayPanel.add(lblFtPerSec);
 		
 		lblMotorProgram = new JLabel("Motor Program");
-		lblMotorProgram.setBounds(12, 67, 86, 16);
+		lblMotorProgram.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblMotorProgram.setBounds(12, 65, 137, 22);
 		panelDisplayPanel.add(lblMotorProgram);
 		
 		textFieldMotorProgram = new JTextField();
-		textFieldMotorProgram.setBounds(139, 64, 61, 22);
+		textFieldMotorProgram.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldMotorProgram.setBounds(161, 64, 61, 22);
 		panelDisplayPanel.add(textFieldMotorProgram);
 		textFieldMotorProgram.setColumns(5);
 		
 		lblPodPosition = new JLabel("Pod Position");
-		lblPodPosition.setBounds(12, 96, 88, 16);
+		lblPodPosition.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblPodPosition.setBounds(12, 96, 115, 16);
 		panelDisplayPanel.add(lblPodPosition);
 		
 		textFieldPodPosition = new JTextField();
-		textFieldPodPosition.setBounds(139, 93, 61, 22);
+		textFieldPodPosition.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldPodPosition.setBounds(161, 93, 61, 22);
 		panelDisplayPanel.add(textFieldPodPosition);
 		textFieldPodPosition.setColumns(5);
 		
 		lblFuelRemaining = new JLabel("Fuel Remaining");
-		lblFuelRemaining.setBounds(12, 125, 103, 16);
+		lblFuelRemaining.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFuelRemaining.setBounds(12, 125, 154, 19);
 		panelDisplayPanel.add(lblFuelRemaining);
 		
 		textFieldFuelRemaining = new JTextField();
-		textFieldFuelRemaining.setBounds(139, 122, 61, 22);
+		textFieldFuelRemaining.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldFuelRemaining.setBounds(161, 122, 61, 22);
 		panelDisplayPanel.add(textFieldFuelRemaining);
 		textFieldFuelRemaining.setColumns(5);
 		
 		lblAttitude = new JLabel("Attitude");
-		lblAttitude.setBounds(12, 153, 56, 16);
+		lblAttitude.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAttitude.setBounds(12, 153, 115, 16);
 		panelDisplayPanel.add(lblAttitude);
 		
 		textFieldAttitude = new JTextField();
-		textFieldAttitude.setBounds(139, 150, 61, 22);
+		textFieldAttitude.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldAttitude.setBounds(161, 149, 61, 22);
 		panelDisplayPanel.add(textFieldAttitude);
 		textFieldAttitude.setColumns(5);
 		
 		lblGroundAttitude = new JLabel("Ground Attitude");
-		lblGroundAttitude.setBounds(12, 182, 101, 16);
+		lblGroundAttitude.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblGroundAttitude.setBounds(12, 182, 137, 16);
 		panelDisplayPanel.add(lblGroundAttitude);
 		
 		textFieldGroundAttitude = new JTextField();
-		textFieldGroundAttitude.setBounds(139, 179, 61, 22);
+		textFieldGroundAttitude.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textFieldGroundAttitude.setBounds(161, 178, 61, 22);
 		panelDisplayPanel.add(textFieldGroundAttitude);
 		textFieldGroundAttitude.setColumns(5);
 		
 		lblGallons = new JLabel("Gallons");
-		lblGallons.setBounds(211, 125, 56, 16);
+		lblGallons.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblGallons.setBounds(234, 126, 74, 16);
 		panelDisplayPanel.add(lblGallons);
 		
 		lblAttDegrees = new JLabel("Degrees");
-		lblAttDegrees.setBounds(212, 153, 56, 16);
+		lblAttDegrees.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAttDegrees.setBounds(234, 150, 77, 22);
 		panelDisplayPanel.add(lblAttDegrees);
 		
 		lblGroundAttDegrees = new JLabel("Degrees");
-		lblGroundAttDegrees.setBounds(211, 182, 56, 16);
+		lblGroundAttDegrees.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblGroundAttDegrees.setBounds(234, 179, 74, 22);
 		panelDisplayPanel.add(lblGroundAttDegrees);
 		
 		JPanel panelAttitudePanel = new JPanel();
@@ -358,7 +377,7 @@ public class LanderDisplay extends JFrame {
 		
 		JLabel lblDisplayPanel = new JLabel("DISPLAY PANEL");
 		lblDisplayPanel.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblDisplayPanel.setBounds(170, 84, 228, 37);
+		lblDisplayPanel.setBounds(157, 86, 228, 37);
 		contentPane.add(lblDisplayPanel);
 	}
 	
