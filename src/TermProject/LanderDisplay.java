@@ -80,29 +80,17 @@ public class LanderDisplay extends JFrame {
 	private JLabel lblAlertPanel;*/
 	public JPanel contentPane;
 	public JTextField textFieldC1;
-	public JTextField textField_1;
 	public JTextField textFieldB1;
-	public JTextField textField_3;
-	public JTextField textField_4;
-	public JTextField textField_5;
-	public JTextField placeholderTextField_2;
 	public JTextField textFieldD1;
 	public JTextField textFieldD3;
-	public JTextField placeholderTextField;
-	public JTextField textField_10;
 	public JTextField textFieldA1;
-	public JTextField textField_12;
-	public JTextField textField_13;
 	public JTextField textFieldD2;
 	public JTextField textFieldC2;
 	public JTextField textFieldB2;
-	public JTextField txtEpd;
 	public JTextField textFieldA2;
 	public JTextField textFieldC3;
 	public JTextField textFieldB3;
 	public JTextField textFieldA3;
-	public JTextField textField_22;
-	public JTextField textField_23;
 	public JPanel panel_1;
 	public JLabel lblNewLabel;
 	public JTextField textField_24;
@@ -162,134 +150,86 @@ public class LanderDisplay extends JFrame {
 		alertPanel.setBounds(489, 67, 733, 114);
 		contentPane.add(alertPanel);
 		
-		placeholderTextField = new JTextField();
-		placeholderTextField.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(placeholderTextField);
-		placeholderTextField.setColumns(10);
-		
-		textField_4 = new JTextField();
-		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_4);
-		textField_4.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_1);
-		textField_1.setColumns(10);
-		
-		textField_10 = new JTextField();
-		textField_10.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_10);
-		textField_10.setColumns(10);
-		
-		textField_5 = new JTextField();
-		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_5);
-		textField_5.setColumns(10);
-		
-		placeholderTextField_2 = new JTextField();
-		placeholderTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(placeholderTextField_2);
-		placeholderTextField_2.setColumns(10);
-		
-		textField_12 = new JTextField();
-		textField_12.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_12);
-		textField_12.setColumns(10);
-		
 		textFieldA1 = new JTextField();
+		textFieldA1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldA1.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldA1.setText("FLT20");
 		alertPanel.add(textFieldA1);
 		textFieldA1.setColumns(10);
 		
 		textFieldB1 = new JTextField();
+		textFieldB1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldB1.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldB1.setText("POS");
 		alertPanel.add(textFieldB1);
 		textFieldB1.setColumns(10);
 		
 		textFieldC1 = new JTextField();
+		textFieldC1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldC1.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldC1.setText("PDMG");
 		alertPanel.add(textFieldC1);
 		textFieldC1.setColumns(10);
 		
 		textFieldD1 = new JTextField();
+		textFieldD1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldD1.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldD1.setText("LC");
 		alertPanel.add(textFieldD1);
 		textFieldD1.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_3);
-		textField_3.setColumns(10);
-		
-		txtEpd = new JTextField();
-		txtEpd.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(txtEpd);
-		txtEpd.setColumns(10);
-		
 		textFieldA2 = new JTextField();
+		textFieldA2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldA2.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldA2.setText("EPD");
 		alertPanel.add(textFieldA2);
 		textFieldA2.setColumns(10);
 		
 		textFieldB2 = new JTextField();
+		textFieldB2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldB2.setHorizontalAlignment(SwingConstants.CENTER);
 		alertPanel.add(textFieldB2);
 		textFieldB2.setColumns(10);
 		
 		textFieldC2 = new JTextField();
+		textFieldC2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldC2.setHorizontalAlignment(SwingConstants.CENTER);
 		alertPanel.add(textFieldC2);
 		textFieldC2.setColumns(10);
 		
 		textFieldD2 = new JTextField();
+		textFieldD2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldD2.setHorizontalAlignment(SwingConstants.CENTER);
 		alertPanel.add(textFieldD2);
 		textFieldD2.setColumns(10);
 		
-		textField_13 = new JTextField();
-		textField_13.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_13);
-		textField_13.setColumns(10);
-		
-		textField_23 = new JTextField();
-		textField_23.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_23);
-		textField_23.setColumns(10);
-		
 		textFieldA3 = new JTextField();
+		textFieldA3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldA3.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldA3.setText("IDPZ");
 		alertPanel.add(textFieldA3);
 		textFieldA3.setColumns(10);
 		
 		textFieldB3 = new JTextField();
+		textFieldB3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldB3.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldB3.setText("LOS");
 		alertPanel.add(textFieldB3);
 		textFieldB3.setColumns(10);
 		
 		textFieldC3 = new JTextField();
+		textFieldC3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldC3.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldC3.setText("PODPOS: DOWN");
 		alertPanel.add(textFieldC3);
 		textFieldC3.setColumns(10);
 		
 		textFieldD3 = new JTextField();
+		textFieldD3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textFieldD3.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldD3.setText("PODCMD: DOWN");
 		alertPanel.add(textFieldD3);
 		textFieldD3.setColumns(10);
-		
-		textField_22 = new JTextField();
-		textField_22.setHorizontalAlignment(SwingConstants.CENTER);
-		alertPanel.add(textField_22);
-		textField_22.setColumns(10);
 		
 		panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -464,6 +404,11 @@ public class LanderDisplay extends JFrame {
 		lblAlertPanel.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		lblAlertPanel.setBounds(766, 30, 188, 37);
 		contentPane.add(lblAlertPanel);
+		
+		JLabel lblDisplayPanel = new JLabel("DISPLAY PANEL");
+		lblDisplayPanel.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblDisplayPanel.setBounds(170, 84, 228, 37);
+		contentPane.add(lblDisplayPanel);
 	}
 	
 	/**
@@ -489,5 +434,4 @@ public class LanderDisplay extends JFrame {
 	public boolean getButtonStatus() {
 		return tglbtnD.isSelected();
 	}
-	
 }
