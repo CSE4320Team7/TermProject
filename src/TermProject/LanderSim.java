@@ -172,7 +172,7 @@ public class LanderSim {
 			try {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
