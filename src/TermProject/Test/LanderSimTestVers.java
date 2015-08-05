@@ -14,6 +14,11 @@ public class LanderSimTestVers {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		startDisplay();
+		new LanderSimTestVers();
+	}
+
+	private static void startDisplay() {
 		try {
 			display = new TermProject.LanderDisplay();
 			display.setVisible(true);
@@ -21,54 +26,47 @@ public class LanderSimTestVers {
 			e.printStackTrace();
 		}
 		
-		start();
 	}
 	
 	/**
 	 * Begins the simulation. No controls are currently added
+	 * @return 
 	 */
-	private static void start() {
+	public LanderSimTestVers() {
+		TestDataCSVReader reader = new TestDataCSVReader("Mars lander Test Case table.csv");
+		ArrayList<TestDataCSVReader.DataItem> data = reader.getData();
 		
 		Random rand = new Random();
-		ArrayList<TestDataCSVReader.DataItem> data = new TestDataCSVReader("Mars lander Test Case table.csv").getData();
 		//Starting variables
 		double G = 12.2; //feet/second^2
 		int time = 0;
 		
-		double alt = 14318; //feet
-		double vel = -366.667; //feet/second
-		double fuel = 135; //gallons
-		int groundAtt = rand.nextInt(21) - 10;
-		int landerAtt = 0;
-		int damage = 0;
-		
 		//TODO: Start in Up position when switch is working
-		boolean podpos = false; //Up = false, Down = true
+		boolean podpos = display.getButtonStatus(); //Up = false, Down = true
 
 		//a = alarm, i = indicator, w = warning
 		//Fuel <20, Pod OverSpeed, Ideal Pod Down Zone, Lander Crashed, 
 		//Landed on Surface, Pod Cmd, Pos position
-		boolean aFLT20 = false, aPOS = false, iIPDZ = false, aPDMG = false,
-				wEPD = false, aLC = false, iLOS = false, iPODCMD = false, iPODPOS = false;
 		
 		//Run program until fuel is empty?
-		int i = 0;
-		do {
-			TestDataCSVReader.DataItem testData = data.remove(i);
-			if(testData.strInputPODPOS.equalsIgnoreCase("U"))
+		while(!data.isEmpty()){
+			boolean aFLT20 = false, aPOS = false, iIPDZ = false, aPDMG = false,
+					wEPD = false, aLC = false, iLOS = false, iPODCMD = false, iPODPOS = false;
+			TestDataCSVReader.DataItem testData = data.remove(0);
+			
+			if(testData.strInputPODPOS.equalsIgnoreCase("u"))
 				display.setButton(false);
 			else
 				display.setButton(true);
 			
-			groundAtt = 0;
-			damage = testData.intInputPodDamageCount;
-			alt = testData.dblInputAltitude;
-			vel = testData.dblInputVelocity;
-			fuel = testData.dblInputFuel;
-			
 			podpos = display.getButtonStatus();
 			
-			landerAtt = display.getLanderAttitude();
+			double alt = testData.dblInputAltitude; //feet
+			double vel = testData.dblInputVelocity; //feet/second
+			double fuel = testData.dblInputFuel; //gallons
+			int groundAtt = 0; //rand.nextInt(21) - 10;
+			int landerAtt = display.getLanderAttitude();
+			int damage = testData.intInputPodDamageCount;
 			
 			String MPD = "";
 			double cGPS = 1;
@@ -89,7 +87,7 @@ public class LanderSimTestVers {
 				cRate = 13.7;
 			} else {
 				MPD = "OFF";
-				cGPS = 0.001;
+				cGPS = 0.000001;
 				cRate = 0;
 			}
 			
@@ -99,15 +97,22 @@ public class LanderSimTestVers {
 				if(podpos && landerAtt == groundAtt) {
 					//check to see if lander is damaged
 					if(aPDMG) { //if pod is damaged
-						int crash = rand.nextInt(10) + 1; //generate number between 1-10
-						if(crash > 7) //if greater than 7 (30% chance)
+						double crash = testData.dblInputRNG;//rand.nextInt(10) + 1; //generate number between 1-10
+						if(crash > 7) {//if greater than 7 (30% chance)
 							iLOS = true;
-						else
+							aLC = false;
+						} else {
+							iLOS = false;
 							aLC = true;
-					} else
+						}
+					} else {
 						iLOS = true;
-				} else
+						aLC = false;
+					}
+				} else {
 					aLC = true;
+					iLOS = false;
+				}
 			}
 
 			
@@ -121,7 +126,7 @@ public class LanderSimTestVers {
 			//Damage Pod and Speed Alarms
 			//Pod damage if vel over 100 for 20 seconds
 			if(vel < -100 && podpos == true) {
-				damage = damage + 1;
+				//damage = damage + 1;
 				aPOS = true;
 			} else {
 				aPOS = false;
@@ -133,7 +138,7 @@ public class LanderSimTestVers {
 			}
 			
 			//Emergency Pod Deploy Warning
-			if(vel > -50) { 
+			if(Math.abs(vel) > 50) { 
 				wEPD = true;
 			} else
 				wEPD = false;
@@ -147,64 +152,61 @@ public class LanderSimTestVers {
 				
 			//Ideal Pod Down Zone Indicator
 			if(-50 > vel && vel >= -100) {
-				if(alt >- 0)
-					if(podpos != true) {
+				if(alt >= 0)
+					if(podpos != true)
 						iIPDZ = true;
-					} else
+					else
 						iIPDZ = false;
+			}
+			
+			//iPODPOS
+			if(iPODCMD) {
+				iPODPOS = true;
+				podpos = true;
+			} else {
+				iPODPOS = false;
+				podpos = false;
 			}
 
 			//If we're landed or crashed, leave loop
 			if(aLC == true || iLOS == true) {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				//break;
+				continue;
 			}
 			
 			//calculate stuff if pod is down(true)
-			time = time + 1;
 			{
-				time = time + 1;
+				time = 1;//time + 1;
 				alt -= (time-0.5)*(cRate-G);
 				vel += (cRate - G);
 				fuel -= cGPS;
-			}
-
-				
-			
-			//iPODPOS
-			if(iPODCMD) {
-				iPODPOS = true;
-				podpos = true;
-			} else {
-				iPODPOS = false;
-				podpos = false;
 			}
 			
 			
 			//aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS
 			try {
-				Thread.sleep(1000);
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
+				Thread.sleep(200);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 			
+			/**
+			boolean testFLT = aFLT20 == testData.boolOutputFLT20;
+			boolean testPOS = aPOS == testData.boolOutputPOS;
+			boolean testIPDZ = iIPDZ == testData.boolOutputIPDZ;
+			boolean testPDMG = aPDMG == testData.boolOutputPDMG;
+			boolean testEPD = wEPD == testData.boolOutputEPD;
 			
-			/**pod buttons are calculated for the next second.
-			podpos = display.getButtonStatus();
+			System.out.println("\tflt " + testFLT + " pos" + testPOS + " ipdz" + testIPDZ + " dmg" + testPDMG + " epd " + testEPD);
 			
-			//iPODPOS
-			if(iPODCMD) {
-				iPODPOS = true;
-				podpos = true;
-			} else {
-				iPODPOS = false;
-				podpos = false;
-			}*/
-			i++;
-		} while(data.isEmpty());
+			boolean test1 = (alt == testData.dblOutputAltitude), test2 = (vel == testData.dblOutputVelocity), test3 = (testData.strOutputPODPOS.equalsIgnoreCase("d") == podpos);
+			
+			System.out.println("\t Alt " + test1 + " Vel " + test2 + " PODPOS " + test3);
+			*/
+		}
 		
 	}
 	
@@ -278,15 +280,20 @@ public class LanderSimTestVers {
 			display.textFieldB3.setForeground(Color.GREEN);
 		else
 			display.textFieldB3.setForeground(Color.BLACK);
-		if(iPODPOS)
+		if(iPODPOS) {
+			display.textFieldC3.setText("PODPOS: DOWN");
 			display.textFieldC3.setForeground(Color.GREEN);
-		else
+		} else {
+			display.textFieldC3.setText("PODPOS: UP");
 			display.textFieldC3.setForeground(Color.BLACK);
-		if(iPODCMD)
+		}
+		if(iPODCMD) {
+			display.textFieldD3.setText("PODCMD: DOWN");
 			display.textFieldD3.setForeground(Color.GREEN);
-		else
+		} else {
+			display.textFieldD3.setText("PODCMD: UP");
 			display.textFieldD3.setForeground(Color.BLACK);
-		
+		}
 
 	}
 

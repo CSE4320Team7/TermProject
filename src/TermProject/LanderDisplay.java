@@ -468,12 +468,15 @@ public class LanderDisplay extends JFrame {
 	
 	/**
 	 * set the Up / Down pod button through code
-	 * @param test true if bod is activated.
+	 * @param test true if pod is activated.
 	 */
 	public void setButton(boolean test) {
 		if(test) {
 			tglbtnNewToggleButton_2.setSelected(false);
 			tglbtnD.setSelected(true);
+		} else {
+			tglbtnNewToggleButton_2.setSelected(true);
+			tglbtnD.setSelected(false);
 		}
 	}
 	
