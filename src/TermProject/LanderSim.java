@@ -205,16 +205,16 @@ public class LanderSim {
 		//This would be the output panel showing alt, vel, fuel
 		//System.out.printf("\nAt time %d\n   MPD: %s, Alt: %.3f, Vel: %.3f, Fuel: %.3f", time, MPD, alt, vel, fuel);
 		
-		display.textField_24.setText(String.format("%.3f", alt));
-		display.textField_25.setText(String.format("%.3f", vel));
-		display.textField_26.setText(MPD);
+		display.textFieldAltitude.setText(String.format("%.3f", alt));
+		display.textFieldVelocity.setText(String.format("%.3f", vel));
+		display.textFieldMotorProgram.setText(MPD);
 		if(!podpos)
-			display.textField_27.setText("UP");
+			display.textFieldPodPosition.setText("UP");
 		else
-			display.textField_27.setText("DOWN");
-		display.textField_28.setText(String.format("%.3f", fuel));
-		display.textField_29.setText("" + lAtt);
-		display.textField_30.setText("" + gAtt);
+			display.textFieldPodPosition.setText("DOWN");
+		display.textFieldFuelRemaining.setText(String.format("%.3f", fuel));
+		display.textFieldAttitude.setText("" + lAtt);
+		display.textFieldGroundAttitude.setText("" + gAtt);
 		
 		//The following 3 sections would be the indicator panel
 		if(aFLT20)
