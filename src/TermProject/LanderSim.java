@@ -69,40 +69,19 @@ public class LanderSim {
 				MPD = "RR2";
 				cGPS = 1.65;
 				cRate = 19;
-			} else if((0 < alt && alt < 3500) && fuel >= 1.8) {
+			} else if((0 <= alt && alt < 3500) && fuel >= 1.8) {
 				MPD = "RR3";
 				cGPS = 1.8;
 				cRate = 13.7;
-			} else {
-				MPD = "OFF";
-				cGPS = 0.000001;
-				cRate = 0;
-			}
-			
-			//Checking if altitude is on ground
-			if(alt < 0) {
-				//if pod is down (true) and attitudes are same
-				if(iPODPOS && landerAtt == groundAtt) {
-					//check to see if lander is damaged
-					if(aPDMG) { //if pod is damaged
-						int crash = rand.nextInt(10); //generate number between 0-9
-						if(crash < 3) {//if less than 3 (30% chance)
-							iLOS = true;
-							aLC = false;
-						} else {
-							iLOS = false;
-							aLC = true;
-						}
-					} else {
-						iLOS = true;
-						aLC = false;
-					}
-				} else {
-					aLC = true;
-					iLOS = false;
-				}
 			}
 
+			//calculate stuff if you're flying
+			if(alt >= 0) {
+				time = time + 1;
+				alt -= (time-0.5)*(cRate-G);
+				vel += (cRate - G);
+				fuel -= cGPS;
+			}
 			
 			//Fuel 20 second alarm
 			if(fuel/cGPS < 20) {
@@ -127,7 +106,7 @@ public class LanderSim {
 			}
 			
 			//Emergency Pod Deploy Warning
-			if(0 <= Math.abs(vel) && Math.abs(vel) < 50) { 
+			if(vel >= -50 && alt >= 0) { 
 				wEPD = true;
 			} else {
 				wEPD = false;
@@ -152,19 +131,40 @@ public class LanderSim {
 						iIPDZ = false;
 			}
 
+			
+			//Checking if altitude is on ground
+			if(alt < 0) {
+				//if pod is down (true) and attitudes are same
+				if(iPODPOS && (landerAtt >= groundAtt-5 && landerAtt <= groundAtt+5)) {
+					//check to see if lander is damaged
+					if(aPDMG) { //if pod is damaged
+						int crash = rand.nextInt(10); //generate number between 0-9
+						if(crash < 3) {//if less than 3 (30% chance)
+							iLOS = true;
+							aLC = false;
+						} else {
+							iLOS = false;
+							aLC = true;
+						}
+					} else {
+						iLOS = true;
+						aLC = false;
+					}
+				} else {
+					aLC = true;
+					iLOS = false;
+				}
+			}
+
 			//If we're landed or crashed, leave loop
 			if(aLC == true || iLOS == true) {
+				MPD = "OFF";
+				cGPS = 0.000001;
+				cRate = 0;
+				
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
-						time, podSwitch, MPD, fuel, alt, vel, landerAtt, groundAtt);
+						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
 				break;
-			}
-			
-			//calculate stuffS
-			{
-				time = time + 1;
-				alt -= (time-0.5)*(cRate-G);
-				vel += (cRate - G);
-				fuel -= cGPS;
 			}
 			
 			
@@ -172,21 +172,10 @@ public class LanderSim {
 			try {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			
-			/**pod buttons are calculated for the next second.
-			podSwitch = display.getButtonStatus();
-			
-			//iPODPOS
-			if(iPODCMD) {
-				iPODPOS = true;
-				podSwitch = true;
-			} else {
-				iPODPOS = podSwitch;
-			}*/
 			
 		}
 		
@@ -235,20 +224,47 @@ public class LanderSim {
 			//TODO:change color to green
 			display.textFieldA1.setForeground(Color.RED);
 		else
+			display.textFieldA1.setForeground(Color.BLACK); //TODO:change color to white
 		if(aPOS)
+			display.textFieldB1.setForeground(Color.RED);
 		else
+			display.textFieldB1.setForeground(Color.BLACK);
 		if(aPDMG)
+			display.textFieldC1.setForeground(Color.RED);
 		else
+			display.textFieldC1.setForeground(Color.BLACK);
 		if(aLC)
+			display.textFieldD1.setForeground(Color.RED);
 		else
+			display.textFieldD1.setForeground(Color.BLACK);
 		
 		if(wEPD)
+			display.textFieldA2.setForeground(Color.ORANGE);
 		else
+			display.textFieldA2.setForeground(Color.BLACK);
 		
 		if(iIPDZ)
+			display.textFieldA3.setForeground(Color.GREEN);
 		else
+			display.textFieldA3.setForeground(Color.BLACK);
 		if(iLOS)
+			display.textFieldB3.setForeground(Color.GREEN);
 		else
+			display.textFieldB3.setForeground(Color.BLACK);
+		if(iPODPOS) {
+			display.textFieldC3.setText("PODPOS: DOWN");
+			display.textFieldC3.setForeground(Color.GREEN);
+		} else {
+			display.textFieldC3.setText("PODPOS: UP");
+			display.textFieldC3.setForeground(Color.BLACK);
+		}
+		if(iPODCMD) {
+			display.textFieldD3.setText("PODCMD: DOWN");
+			display.textFieldD3.setForeground(Color.GREEN);
+		} else {
+			display.textFieldD3.setText("PODCMD: UP");
+			display.textFieldD3.setForeground(Color.BLACK);
+		}
 
 	}
 
