@@ -98,7 +98,7 @@ public class LanderSimTestVers {
 					//check to see if lander is damaged
 					if(aPDMG) { //if pod is damaged
 						double crash = testData.dblInputRNG;//rand.nextInt(10) + 1; //generate number between 1-10
-						if(crash > 7) {//if greater than 7 (30% chance)
+						if(crash < 3) {//if greater than 7 (30% chance)
 							iLOS = true;
 							aLC = false;
 						} else {
@@ -138,7 +138,7 @@ public class LanderSimTestVers {
 			}
 			
 			//Emergency Pod Deploy Warning
-			if(Math.abs(vel) > 50) { 
+			if(0 <= Math.abs(vel) && Math.abs(vel) < 50) { 
 				wEPD = true;
 			} else
 				wEPD = false;
@@ -175,7 +175,7 @@ public class LanderSimTestVers {
 				continue;
 			}
 			
-			//calculate stuff if pod is down(true)
+			//calculate stuff
 			{
 				time = 1;//time + 1;
 				alt -= (time-0.5)*(cRate-G);
@@ -188,24 +188,10 @@ public class LanderSimTestVers {
 			try {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				Thread.sleep(200);
+				Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			
-			/**
-			boolean testFLT = aFLT20 == testData.boolOutputFLT20;
-			boolean testPOS = aPOS == testData.boolOutputPOS;
-			boolean testIPDZ = iIPDZ == testData.boolOutputIPDZ;
-			boolean testPDMG = aPDMG == testData.boolOutputPDMG;
-			boolean testEPD = wEPD == testData.boolOutputEPD;
-			
-			System.out.println("\tflt " + testFLT + " pos" + testPOS + " ipdz" + testIPDZ + " dmg" + testPDMG + " epd " + testEPD);
-			
-			boolean test1 = (alt == testData.dblOutputAltitude), test2 = (vel == testData.dblOutputVelocity), test3 = (testData.strOutputPODPOS.equalsIgnoreCase("d") == podpos);
-			
-			System.out.println("\t Alt " + test1 + " Vel " + test2 + " PODPOS " + test3);
-			*/
 		}
 		
 	}

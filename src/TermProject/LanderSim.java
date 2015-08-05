@@ -3,6 +3,7 @@ package TermProject;
 import java.util.Random;
 
 import java.awt.Color;
+import java.awt.color.*;
 
 public class LanderSim {
 	
@@ -10,14 +11,17 @@ public class LanderSim {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		try {
+		startDisplay();
+		start();
+	}
+	
+	private static void startDisplay() {
+		try{
 			display = new LanderDisplay();
 			display.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		start();
 	}
 	
 	/**
@@ -39,16 +43,17 @@ public class LanderSim {
 		int damage = 0;
 		
 		//Start in Up position when switch is working
-		boolean podpos = false; //Up = false, Down = true
+		boolean podSwitch = false, iPODCMD = false, iPODPOS = false; //Up = false, Down = true
 
-		//a = alarm, i = indicator, w = warning
-		//Fuel <20, Pod OverSpeed, Ideal Pod Down Zone, Lander Crashed, 
-		//Landed on Surface, Pod Cmd, Pos position
-		boolean aFLT20 = false, aPOS = false, iIPDZ = false, aPDMG = false,
-				wEPD = false, aLC = false, iLOS = false, iPODCMD = false, iPODPOS = false;
-		
-		//Run program until fuel is empty?
+		//Run program until lander detects its done
 		while(true) {
+			
+			//a = alarm, i = indicator, w = warning
+			//Fuel <20, Pod OverSpeed, Ideal Pod Down Zone, Lander Crashed, 
+			//Landed on Surface, Pod Cmd, Pos position
+			boolean aFLT20 = false, aPOS = false, iIPDZ = false, aPDMG = false,
+					wEPD = false, aLC = false, iLOS = false;
+			
 			landerAtt = display.getLanderAttitude();
 			
 			String MPD = "";
@@ -70,25 +75,32 @@ public class LanderSim {
 				cRate = 13.7;
 			} else {
 				MPD = "OFF";
-				cGPS = 0.001;
+				cGPS = 0.000001;
 				cRate = 0;
 			}
 			
 			//Checking if altitude is on ground
 			if(alt < 0) {
 				//if pod is down (true) and attitudes are same
-				if(podpos && landerAtt == groundAtt) {
+				if(iPODPOS && landerAtt == groundAtt) {
 					//check to see if lander is damaged
 					if(aPDMG) { //if pod is damaged
-						int crash = rand.nextInt(10) + 1; //generate number between 1-10
-						if(crash > 7) //if greater than 7 (30% chance)
+						int crash = rand.nextInt(10); //generate number between 0-9
+						if(crash < 3) {//if less than 3 (30% chance)
 							iLOS = true;
-						else
+							aLC = false;
+						} else {
+							iLOS = false;
 							aLC = true;
-					} else
+						}
+					} else {
 						iLOS = true;
-				} else
+						aLC = false;
+					}
+				} else {
 					aLC = true;
+					iLOS = false;
+				}
 			}
 
 			
@@ -100,7 +112,7 @@ public class LanderSim {
 			}
 			
 			//Damage Pod and Speed Alarms
-			if(vel < -100 && podpos == true) {
+			if(vel < -100 && podSwitch == true) {
 				damage = damage + 1;
 				aPOS = true;
 			} else {
@@ -115,22 +127,26 @@ public class LanderSim {
 			}
 			
 			//Emergency Pod Deploy Warning
-			if(vel > -50) { 
+			if(0 <= Math.abs(vel) && Math.abs(vel) < 50) { 
 				wEPD = true;
-			} else
+			} else {
 				wEPD = false;
+			}
+			
+			podSwitch = display.getButtonStatus();
+			iPODPOS = iPODCMD;
 
 			//Pod Position COmmand INdicator
 			if(wEPD) {
 				iPODCMD = true; //DOWN
 			} else {
-				iPODCMD = iPODPOS;
+				iPODCMD = podSwitch;
 			}
 				
 			//Ideal Pod Down Zone Indicator
 			if(-50 > vel && vel >= -100) {
-				if(alt >- 0)
-					if(podpos != true) {
+				if(alt >= 0)
+					if(podSwitch != true) {
 						iIPDZ = true;
 					} else
 						iIPDZ = false;
@@ -139,11 +155,11 @@ public class LanderSim {
 			//If we're landed or crashed, leave loop
 			if(aLC == true || iLOS == true) {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
-						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
+						time, podSwitch, MPD, fuel, alt, vel, landerAtt, groundAtt);
 				break;
 			}
 			
-			//calculate stuff if pod is down(true)
+			//calculate stuffS
 			{
 				time = time + 1;
 				alt -= (time-0.5)*(cRate-G);
@@ -154,25 +170,23 @@ public class LanderSim {
 			
 			//aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS
 			try {
-				Thread.sleep(1000);
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
-						time, podpos, MPD, fuel, alt, vel, landerAtt, groundAtt);
+						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
+				Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 			
-			
-			//pod buttons are calculated for the next second.
-			podpos = display.getButtonStatus();
+			/**pod buttons are calculated for the next second.
+			podSwitch = display.getButtonStatus();
 			
 			//iPODPOS
 			if(iPODCMD) {
 				iPODPOS = true;
-				podpos = true;
+				podSwitch = true;
 			} else {
-				iPODPOS = false;
-				podpos = false;
-			}
+				iPODPOS = podSwitch;
+			}*/
 			
 		}
 		
@@ -221,42 +235,20 @@ public class LanderSim {
 			//TODO:change color to green
 			display.textFieldA1.setForeground(Color.RED);
 		else
-			display.textFieldA1.setForeground(Color.BLACK); //TODO:change color to white
 		if(aPOS)
-			display.textFieldB1.setForeground(Color.RED);
 		else
-			display.textFieldB1.setForeground(Color.BLACK);
 		if(aPDMG)
-			display.textFieldC1.setForeground(Color.RED);
 		else
-			display.textFieldC1.setForeground(Color.BLACK);
 		if(aLC)
-			display.textFieldD1.setForeground(Color.RED);
 		else
-			display.textFieldD1.setForeground(Color.BLACK);
 		
 		if(wEPD)
-			display.textFieldA2.setForeground(Color.ORANGE);
 		else
-			display.textFieldA2.setForeground(Color.BLACK);
 		
 		if(iIPDZ)
-			display.textFieldA3.setForeground(Color.GREEN);
 		else
-			display.textFieldA3.setForeground(Color.BLACK);
 		if(iLOS)
-			display.textFieldB3.setForeground(Color.GREEN);
 		else
-			display.textFieldB3.setForeground(Color.BLACK);
-		if(iPODPOS)
-			display.textFieldC3.setForeground(Color.GREEN);
-		else
-			display.textFieldC3.setForeground(Color.BLACK);
-		if(iPODCMD)
-			display.textFieldD3.setForeground(Color.GREEN);
-		else
-			display.textFieldD3.setForeground(Color.BLACK);
-		
 
 	}
 
