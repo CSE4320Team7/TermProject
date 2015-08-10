@@ -125,7 +125,7 @@ public class LanderSimTestVers {
 			}
 			
 			//Emergency Pod Deploy Warning
-			if(vel >= -50 && alt >= 0) { 
+			if((vel >= -50 && alt >= 0) && podSwitch == false) { 
 				wEPD = true;
 			} else {
 				wEPD = false;
