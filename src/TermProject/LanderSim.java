@@ -65,11 +65,11 @@ public class LanderSim {
 				MPD = "RR1";
 				cGPS = 1.25;
 				cRate = 17;
-			} else if((3500 <= alt && alt < 6500) && fuel >= 1.65) {
+			} else if(3500 <= alt && fuel >= 1.65) {
 				MPD = "RR2";
 				cGPS = 1.65;
 				cRate = 19;
-			} else if((0 <= alt && alt < 3500) && fuel >= 1.8) {
+			} else if(0 <= alt && fuel >= 1.8) {
 				MPD = "RR3";
 				cGPS = 1.8;
 				cRate = 13.7;

@@ -48,29 +48,29 @@ public class LanderSimTestVers {
 		//Fuel <20, Pod OverSpeed, Ideal Pod Down Zone, Lander Crashed, 
 		//Landed on Surface, Pod Cmd, Pos position
 		
-		//Run program until fuel is empty?
+		//Run program until test cases are exhausted.
 		while(!data.isEmpty()){
 			//iPODCMD and iPODPOS moved to inside loop
 			boolean aFLT20 = false, aPOS = false, iIPDZ = false, aPDMG = false,
 					wEPD = false, aLC = false, iLOS = false, iPODCMD = false, iPODPOS = false;
-
-			{ //This is a section for test data.
-				TestDataCSVReader.DataItem testData = data.remove(0);
+			
+			//This is a section for test data.
+			TestDataCSVReader.DataItem testData = data.remove(0);
 				
-				if(testData.strInputPODPOS.equalsIgnoreCase("u"))
-					display.setButton(false);
-				else
-					display.setButton(true);
+			if(testData.strInputPODPOS.equalsIgnoreCase("u"))
+				display.setButton(false);
+			else
+				display.setButton(true);
 				
-				podSwitch = display.getButtonStatus();
+			podSwitch = display.getButtonStatus();
 				
-				double alt = testData.dblInputAltitude; //feet
-				double vel = testData.dblInputVelocity; //feet/second
-				double fuel = testData.dblInputFuel; //gallons
-				int groundAtt = 0; //rand.nextInt(21) - 10;
-				int landerAtt = display.getLanderAttitude();
-				int damage = testData.intInputPodDamageCount;
-			}
+			double alt = testData.dblInputAltitude; //feet
+			double vel = testData.dblInputVelocity; //feet/second
+			double fuel = testData.dblInputFuel; //gallons
+			int groundAtt = 0; //rand.nextInt(21) - 10;
+			int landerAtt = display.getLanderAttitude();
+			int damage = testData.intInputPodDamageCount;
+			//End of section.
 			
 			String MPD = "";
 			double cGPS = 1;
@@ -81,11 +81,11 @@ public class LanderSimTestVers {
 				MPD = "RR1";
 				cGPS = 1.25;
 				cRate = 17;
-			} else if((3500 <= alt && alt < 6500)) {
+			} else if(3500 <= alt) {
 				MPD = "RR2";
 				cGPS = 1.65;
 				cRate = 19;
-			} else if((0 <= alt && alt < 3500)) {
+			} else if(0 <= alt) {
 				MPD = "RR3";
 				cGPS = 1.8;
 				cRate = 13.7;
@@ -111,9 +111,9 @@ public class LanderSimTestVers {
 			}
 			
 			//Damage Pod and Speed Alarms
-			//Pod damage if vel over 100 for 20 seconds
+			//Pod damage if vel over 100 for 40 seconds
 			if(vel < -100 && podSwitch == true) {
-				//damage = damage + 1;
+				damage = damage + 1;
 				aPOS = true;
 			} else {
 				aPOS = false;
@@ -143,8 +143,8 @@ public class LanderSimTestVers {
 			iPODPOS = iPODCMD;
 				
 			//Ideal Pod Down Zone Indicator
-			if(-50 > vel && vel >= -100) {
-				if(alt >= 0)
+			if(alt >= 0) {
+				if(-50 > vel && vel >= -100)
 					if(podSwitch != true)
 						iIPDZ = true;
 					else
@@ -154,8 +154,8 @@ public class LanderSimTestVers {
 			
 			//Checking if altitude is on ground
 			if(alt < 0) {
-				//if pod is down (true) and attitudes are same
-				if(iPODPOS && landerAtt == groundAtt) {
+				//if pod is down (true) and attitudes are within 5 degrees of each other
+				if(iPODPOS && (landerAtt >= groundAtt-5 && landerAtt <= groundAtt+5)) {
 					//check to see if lander is damaged
 					if(aPDMG) { //if pod is damaged
 						double crash = testData.dblInputRNG;//rand.nextInt(10) + 1; //generate number between 1-10
@@ -178,9 +178,14 @@ public class LanderSimTestVers {
 			
 			//If we're landed or crashed, leave loop
 			if(aLC == true || iLOS == true) {
-				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
-						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				continue;
+				try {
+					LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
+							time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
+					Thread.sleep(1000);
+					continue;
+				} catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
 			}
 			
 			
@@ -188,7 +193,7 @@ public class LanderSimTestVers {
 			try {
 				LanderDisplay(aFLT20, aPOS, iIPDZ, aPDMG, wEPD, aLC, iLOS, iPODCMD, iPODPOS,
 						time, iPODPOS, MPD, fuel, alt, vel, landerAtt, groundAtt);
-				Thread.sleep(200);
+				Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
